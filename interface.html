@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DreamFuel - Main Page</title>
+    <link rel="stylesheet" href="interface.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/js/all.min.js" crossorigin="anonymous"></script>
+</head>
+<body>
+    <header>
+        <h1>DreamFuel</h1>
+        <nav>
+            <ul>
+                <li><a href="#quotes"><i class="fas fa-quote-left"></i> Quotes</a></li>
+                <li><a href="#challenges"><i class="fas fa-tasks"></i> Challenges</a></li>
+                <li><a href="#tips"><i class="fas fa-lightbulb"></i> Tips</a></li>
+                <li><a href="#progress"><i class="fas fa-chart-line"></i> Progress</a></li>
+                <li><a href="#community"><i class="fas fa-users"></i> Community</a></li>
+                <li><a href="#profile"><i class="fas fa-user"></i> Profile</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+        <section id="welcome">
+            <h2>Welcome to DreamFuel</h2>
+            <p>Your daily source of motivation and growth!</p>
+            <button class="cta-button">Get Started</button>
+        </section>    
+        <section id="quotes">
+            <h2>Daily Quotes</h2>
+            <p>Motivational quotes will be displayed here.</p>
+        </section>
+        <section id="daily-quote">
+            <h2>Daily Quote</h2>
+            <p id="quote-text">Loading...</p>
+            <button class="cta-button" id="new-quote-btn">New Quote</button>
+        </section>
+
+        <section id="challenges">
+            <h2>Challenges</h2>
+            <p>Complete daily challenges to stay motivated.</p>
+        </section>
+
+        <section id="tips">
+            <h2>Personal Development Tips</h2>
+            <p>Helpful tips for self-improvement.</p>
+        </section>
+
+        <section id="progress">
+            <h2>Track Your Progress</h2>
+            <p>Monitor your achievements and goals.</p>
+        </section>
+
+        <section id="community">
+            <h2>Community</h2>
+            <p>Connect with like-minded people.</p>
+        </section>
+
+        <section id="profile">
+            <h2>Your Profile</h2>
+            <p>Manage your personal details and preferences.</p>
+        </section>  
+    </main>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const navLinks = document.querySelectorAll("nav ul li a");
+
+            navLinks.forEach(link => {
+                link.addEventListener("click", function (e) {
+                    e.preventDefault();
+                    const targetId = this.getAttribute("href").substring(1);
+                    const targetSection = document.getElementById(targetId);
+
+                    if (targetSection) {
+                        window.scrollTo({
+                            top: targetSection.offsetTop - 100, 
+                            behavior: "smooth"
+                        });
+                    }
+                });
+            });
+        });
+        document.addEventListener("DOMContentLoaded", function () {
+            const welcomeText = document.querySelector("#welcome h2");
+            welcomeText.style.opacity = "0";
+            welcomeText.style.transform = "translateY(-20px)";
+            setTimeout(() => {
+                welcomeText.style.transition = "opacity 1s ease-out, transform 1s ease-out";
+                welcomeText.style.opacity = "1";
+                welcomeText.style.transform = "translateY(0)";
+            }, 500);
+
+            const ctaButton = document.querySelector(".cta-button");
+            ctaButton.addEventListener("mouseover", () => {
+                ctaButton.style.transform = "scale(1.1)";
+                ctaButton.style.transition = "transform 0.3s ease-in-out";
+            });
+
+            ctaButton.addEventListener("mouseleave", () => {
+                ctaButton.style.transform = "scale(1)";
+            });
+
+            const sections = document.querySelectorAll("section");
+
+            const revealSections = () => {
+                sections.forEach(section => {
+                    const sectionTop = section.getBoundingClientRect().top;
+                    if (sectionTop < window.innerHeight - 100) {
+                        section.style.opacity = "1";
+                        section.style.transform = "translateY(0)";
+                    }
+                });
+            };
+
+            sections.forEach(section => {
+                section.style.opacity = "0";
+                section.style.transform = "translateY(50px)";
+                section.style.transition = "opacity 0.8s ease-out, transform 0.8s ease-out";
+            });
+
+            window.addEventListener("scroll", revealSections);
+            revealSections();
+        });
+    </script>
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const quotes = [
+                "Believe you can and you're halfway there. – Theodore Roosevelt",
+                "Success is not final, failure is not fatal: it is the courage to continue that counts. – Winston Churchill",
+                "The only way to do great work is to love what you do. – Steve Jobs",
+                "Don't watch the clock; do what it does. Keep going. – Sam Levenson",
+                "Difficulties in life are intended to make us better, not bitter. – Dan Reeves"
+            ];
+    
+            const quoteText = document.getElementById("quote-text");
+            const newQuoteBtn = document.getElementById("new-quote-btn");
+    
+            function getDailyQuote() {
+                const storedQuote = localStorage.getItem("dailyQuote");
+                const storedDate = localStorage.getItem("quoteDate");
+                const today = new Date().toDateString();
+    
+                if (storedQuote && storedDate === today) {
+                    quoteText.textContent = storedQuote;
+                } else {
+                    const randomQuote = quotes[Math.floor(Math.random() * quotes.length)];
+                    localStorage.setItem("dailyQuote", randomQuote);
+                    localStorage.setItem("quoteDate", today);
+                    quoteText.textContent = randomQuote;
+                }
+            }
+    
+            newQuoteBtn.addEventListener("click", function () {
+                const randomQuote = quotes[Math.floor(Math.random() * quotes.length)];
+                quoteText.textContent = randomQuote;
+                localStorage.setItem("dailyQuote", randomQuote);
+                localStorage.setItem("quoteDate", new Date().toDateString());
+            });
+    
+            getDailyQuote();
+        });
+    </script>
+    
+</body>
+</html>
